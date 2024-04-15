@@ -22,6 +22,25 @@ public class CompteBancaire implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    private String nom;
+    private int solde;
+
+    public String getNom() {
+        return nom;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
+    public int getSolde() {
+        return solde;
+    }
+
+    public void setSolde(int solde) {
+        this.solde = solde;
+    }
+
     public Long getId() {
         return id;
     }
@@ -50,5 +69,27 @@ public class CompteBancaire implements Serializable {
     public String toString() {
         return "mg.tendry.tpbanquetendryrakotoarivony.entity.CompteBancaire[ id=" + id + " ]";
     }
+
+    public CompteBancaire() {
+    }
     
+    
+
+    public CompteBancaire(String nom, int solde) {
+        this.nom = nom;
+        this.solde = solde;
+    }
+
+    public void deposer(int montant) {
+        solde += montant;
+    }
+
+    public void retirer(int montant) {
+        if (montant < solde) {
+            solde -= montant;
+        } else {
+            solde = 0;
+        }
+    }
+
 }
