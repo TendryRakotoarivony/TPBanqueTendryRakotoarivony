@@ -54,14 +54,11 @@ public class GestionnaireCompte {
     }
 
     @Transactional
-    public void transfert(Long idSource, Long idDestination,int montant) {
-        CompteBancaire source = this.getCompte(idSource);
-        CompteBancaire destination = this.getCompte(idDestination);
-        
-        source = em.merge(source);
+    public void transfert(CompteBancaire source, CompteBancaire destination, int montant) {
         source.retirer(montant);
-        destination = em.merge(destination);
         destination.deposer(montant);
+        update(source);
+        update(destination);
     }
 
     public CompteBancaire getCompte(Long id) {

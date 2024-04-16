@@ -8,7 +8,9 @@ import jakarta.inject.Named;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import java.io.Serializable;
+import mg.tendry.tpbanquetendryrakotoarivony.entity.CompteBancaire;
 import mg.tendry.tpbanquetendryrakotoarivony.service.GestionnaireCompte;
+import mg.tendry.tpbanquetendryrakotoarivony.util.Util;
 
 /**
  *
@@ -20,7 +22,7 @@ public class Transfert implements Serializable {
 
     private Long idSource;
     private Long idDestinataire;
-    private int montant;
+    private int montant; 
     @Inject
     GestionnaireCompte gestionnaireCompte;
 
@@ -53,9 +55,31 @@ public class Transfert implements Serializable {
      */
     public Transfert() {
     }
+
     public String transfererArgent() {
-        gestionnaireCompte.transfert(idSource, idDestinataire, montant);
-        return "listeComptes?amp;faces-redirect=true";
+        CompteBancaire source = gestionnaireCompte.getCompte(idSource);
+        CompteBancaire destinataire = gestionnaireCompte.getCompte(idDestinataire);
+        boolean erreur = false;
+        if (source == null) {
+            Util.messageErreur("Aucun compte avec cet id !", "Aucun compte avec cet id !", "form:source");
+            erreur = true;
+        } else {
+            if (source.getSolde() < montant) {
+                Util.messageErreur("Le solde du compte source de " + source.getNom() + " est insuffisant !", "Le solde du compte source de " + source.getNom() + " est insuffisant !", "form:montant");
+                erreur = true;
+            }
+        }
+        if (destinataire == null) {
+            Util.messageErreur("Aucun compte avec cet id !", "Aucun compte avec cet id !", "form:destinataire");
+            erreur = true;
+        }
+        if (erreur) {
+            return null;
+        } else {
+            gestionnaireCompte.transfert(source, destinataire, montant);
+            Util.addFlashInfoMessage("Transfert de " + montant + " EUR depuis le compte de " + source.getNom() + " vers le compte de " + destinataire.getNom() + " correctement effectué.");
+            return "listeComptes?amp;faces-redirect=true";
+        }
     }
 
 }
