@@ -32,11 +32,11 @@
                                              style="width:150px"/>
                             </p:outputPanel>
                         </f:facet>
-                        <p:column>
+                        <p:column sortBy="#{item.id}">
                             <f:facet name="header">
                                 <h:outputText value="Id"/>
                             </f:facet>
-                            <h:outputText value="#{item.id}"/>
+                            <h:link outcome="retraitVersement?idCompte=#{item.id}" value="#{item.id}"/>
                         </p:column>
 
                         <p:column sortBy="#{item.nom}" filterBy="#{item.nom}">
@@ -54,7 +54,7 @@
                         </p:column>
                     </p:dataTable>
                 </h:form>
-                 <h:messages infoStyle="color: green;" errorStyle="display:none;"/>
+                <h:messages infoStyle="color: green;" errorStyle="color:red;"/>
             </ui:define>
 
         </ui:composition>
