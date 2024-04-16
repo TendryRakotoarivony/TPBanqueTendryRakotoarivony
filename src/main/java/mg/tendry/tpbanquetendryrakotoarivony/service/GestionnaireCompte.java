@@ -77,10 +77,11 @@ public class GestionnaireCompte {
         update(compte);
     }
     
-    @Transactional
+     @Transactional
     public void supprimer(CompteBancaire compte){
         em.remove(em.merge(compte));
     }
+    
     @Transactional
     public CompteBancaire update(CompteBancaire compte) {
         return em.merge(compte);
