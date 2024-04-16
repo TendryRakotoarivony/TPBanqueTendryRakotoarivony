@@ -5,6 +5,7 @@
 package mg.tendry.tpbanquetendryrakotoarivony.service;
 
 import jakarta.annotation.sql.DataSourceDefinition;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -28,10 +29,11 @@ import mg.tendry.tpbanquetendryrakotoarivony.entity.CompteBancaire;
     properties = {
       "useSSL=false",
       "allowPublicKeyRetrieval=true",
-      "driverClass=com.mysql.cj.jdbc.Driver"
+      "driverClass=com.mysql.cj.jdbc.Driver",
+      "serverTimezone=Africa/Nairobi" 
     }
 )
-@RequestScoped
+@ApplicationScoped 
 public class GestionnaireCompte {
     @PersistenceContext(unitName = "banquePU")
     private EntityManager em;
@@ -47,8 +49,13 @@ public class GestionnaireCompte {
     }
 
     @Transactional
-    public void ajouter(CompteBancaire comptebancaire) {
+    public void creerCompte(CompteBancaire comptebancaire) {
        em.persist(comptebancaire);
+    }
+     
+     public long nbComptes() {
+        TypedQuery<Long> query = em.createQuery("select count(c) from CompteBancaire c", Long.class);
+        return query.getSingleResult();
     }
     
 }
