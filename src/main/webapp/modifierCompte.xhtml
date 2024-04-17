@@ -24,20 +24,9 @@
                 <h1>Modifier le nom de #{modifierCompte.compteBancaire.nom}</h1>
                 <h:form id="form">
                     <h:panelGrid columns="3">
-                        Id : 
-                        <h:inputText id="id" size="3" value="#{modifierCompte.compteBancaire.id}" required="true"
-                                     requiredMessage="Le champ ID est obligatoire." readonly="true"/>
-                        <h:message for="id"/>
-                    </h:panelGrid>
-                    <h:panelGrid columns="3">
                         Nom du titulaire : 
                         <h:inputText id="nom" size="3" value="#{modifierCompte.compteBancaire.nom}" required="true"/>
                         <h:message for="nom"/>
-                    </h:panelGrid>
-                    <h:panelGrid columns="3">
-                        Solde : 
-                        <h:inputText id="solde" size="3" value="#{modifierCompte.compteBancaire.solde}" required="true" readonly="true"/>
-                        <h:message for="solde"/>
                     </h:panelGrid>
                     <h:commandButton value="Valider" action="#{modifierCompte.updateCompte()}"/>
                 </h:form>

@@ -54,7 +54,7 @@ public class ModifierCompte implements Serializable {
     public String updateCompte() {
         gestionnaireCompte.update(compteBancaire);
         Util.addFlashInfoMessage("Nom " +this.nomInitial+" changé en "+ compteBancaire.getNom());
-        return "modifierCompte?idCompte="+compteBancaire.getId()+"&faces-redirect=true";
+        return "listeComptes?faces-redirect=true";
         
     }
     
