@@ -4,12 +4,17 @@
  */
 package mg.tendry.tpbanquetendryrakotoarivony.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.NamedQuery;
+import jakarta.persistence.OneToMany;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -25,6 +30,8 @@ public class CompteBancaire implements Serializable {
 
     private String nom;
     private int solde;
+    @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)  
+    private List<OperationBancaire> operations = new ArrayList<>(); 
 
     public String getNom() {
         return nom;
@@ -45,6 +52,10 @@ public class CompteBancaire implements Serializable {
     public Long getId() {
         return id;
     }
+    
+    public List<OperationBancaire> getOperations() {  
+      return operations;  
+    } 
 
     @Override
     public int hashCode() {
