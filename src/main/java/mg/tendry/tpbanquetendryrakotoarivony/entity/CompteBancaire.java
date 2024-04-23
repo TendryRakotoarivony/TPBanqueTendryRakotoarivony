@@ -20,42 +20,75 @@ import java.util.List;
  *
  * @author Tendry Arivony
  */
-@NamedQuery(name = "CompteBancaire.findAll", query = "SELECT c FROM CompteBancaire c")
+@NamedQuery(name = "CompteBancaire.findAll", query = "SELECT c FROM CompteBancaire c JOIN FETCH c.operations")
 @Entity
 public class CompteBancaire implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String nom;
+
     private int solde;
-    @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)  
-    private List<OperationBancaire> operations = new ArrayList<>(); 
 
-    public String getNom() {
-        return nom;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<OperationBancaire> operations = new ArrayList<>(); // initialisation de la liste des operations qui n'est pas encore injectée
+
+    public CompteBancaire() {
+        this.operations.add(new OperationBancaire("Création de compte", solde));
     }
 
-    public void setNom(String nom) {
+    public CompteBancaire(String nom, int solde) {
         this.nom = nom;
+        this.solde = solde;
+        this.operations.add(new OperationBancaire("Création de compte", solde));
     }
 
+    /**
+     * Get the value of solde
+     *
+     * @return the value of solde
+     */
     public int getSolde() {
         return solde;
     }
 
+    /**
+     * Set the value of solde
+     *
+     * @param solde new value of solde
+     */
     public void setSolde(int solde) {
         this.solde = solde;
+    }
+
+    /**
+     * Get the value of nom
+     *
+     * @return the value of nom
+     */
+    public String getNom() {
+        return nom;
+    }
+
+    /**
+     * Set the value of nom
+     *
+     * @param nom new value of nom
+     */
+    public void setNom(String nom) {
+        this.nom = nom;
     }
 
     public Long getId() {
         return id;
     }
-    
-    public List<OperationBancaire> getOperations() {  
-      return operations;  
-    } 
+
+    public List<OperationBancaire> getOperations() {
+        return operations;
+    }
 
     @Override
     public int hashCode() {
@@ -79,21 +112,12 @@ public class CompteBancaire implements Serializable {
 
     @Override
     public String toString() {
-        return "mg.tendry.tpbanquetendryrakotoarivony.entity.CompteBancaire[ id=" + id + " ]";
-    }
-
-    public CompteBancaire() {
-    }
-    
-    
-
-    public CompteBancaire(String nom, int solde) {
-        this.nom = nom;
-        this.solde = solde;
+        return "com.mbds.tpbanquerotsy.entity.CompteBancaire[ id=" + id + " ]";
     }
 
     public void deposer(int montant) {
         solde += montant;
+        this.operations.add(new OperationBancaire("Crédit", montant));
     }
 
     public void retirer(int montant) {
@@ -102,6 +126,7 @@ public class CompteBancaire implements Serializable {
         } else {
             solde = 0;
         }
+        this.operations.add(new OperationBancaire("Débit", -montant));
     }
 
 }
